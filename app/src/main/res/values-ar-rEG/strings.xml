@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ops_no_internt_connection">OPS! No Internt Connection</string>
+    <string name="google_maps_key">AIzaSyDJ8xWvWQTRK7ivBcqFCmlGg9Mp-dpfSQ4</string>
+    <string name="search_here">Search here</string>
+
+</resources>

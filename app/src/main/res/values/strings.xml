@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Safego</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="don_t_have_an_account_yet">Don\'t have an account yet ?</string>
+    <string name="signup">Signup</string>
+    <string name="welcome_back">Welcome Back !</string>
+    <string name="already_have_an_account">Already have an account ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">Next</string>
+    <string name="welcome_new_friend">Welcome new Friend !</string>
+    <string name="ssn">SSN</string>
+    <string name="phone">Phone</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="select_a_profile_image">Select a Profile Image</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="current_location">Current Location</string>
+    <string name="start_journey">Start journey</string>
+    <string name="nearby">Nearby</string>
+    <string name="enter_destination">Enter destination</string>
+    <string name="enable_location">Enable location ...</string>
+    <string name="ops_no_internt_connection">OPS! No Internt Connection</string>
+    <string name="google_maps_key">AIzaSyDJ8xWvWQTRK7ivBcqFCmlGg9Mp-dpfSQ4</string>
+    <string name="search_here">Search here</string>
+
+</resources>

@@ -1,0 +1,64 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Safego" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="background">@color/primaryDark</item>
+        <item name="android:colorSecondary">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primaryDark</item>
+        <item name="colorOnSurface">@color/primary</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorTertiary">@color/black</item>
+        <item name="colorTertiaryContainer">@color/black</item>
+        <item name="colorOnTertiaryContainer">@color/black</item>
+        <item name="colorError">@color/emergency</item>
+        <item name="colorErrorContainer">@color/black</item>
+        <item name="colorOnBackground">@color/black</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnTertiary">@color/black</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textColorPrimary">@color/primary</item>
+        <item name="android:colorBackground">@color/primaryDark</item>
+        <item name="colorSecondaryContainer">@color/primaryDark</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorControlActivated">@color/primary</item>
+
+
+    </style>
+    <style name="circularImage" parent="">
+        <item name ="cornerFamily">rounded</item>
+        <item name ="cornerSize">50%</item>
+    </style>
+
+
+    <style name="splashImage" parent="">
+        <item name ="cornerFamily">rounded</item>
+        <item name ="cornerSize">10%</item>
+    </style>
+    <style name="LocB" parent="">
+        <item name ="cornerFamily">rounded</item>
+        <item name ="cornerSize">10%</item>
+    </style>
+
+    <style name="infoText" parent="">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/font</item>
+    </style>
+    <style name="tapTextApp" parent="">
+        <item name="android:textSize">11sp</item>
+        <item name="fontFamily">@font/designer</item>
+        <item name="android:textColor">@color/third</item>
+    </style>
+    <style name="tapSelectTextApp" parent="">
+        <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/designer</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <style name="Theme.Safego" parent="Base.Theme.Safego" />
+</resources>

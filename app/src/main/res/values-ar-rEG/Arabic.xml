@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Safego</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">البريد الالكتروني</string>
+    <string name="prompt_password">كلمة المرور</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">انشاء حساب</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="login">Login</string>
+    <string name="password">كلمة المرور</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="don_t_have_an_account_yet">Don\'t have an account yet ?</string>
+    <string name="signup">Signup</string>
+    <string name="welcome_back">يا مرحب بالعودة!</string>
+    <string name="already_have_an_account">Already have an account ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">التالي</string>
+    <string name="welcome_new_friend">مرحبا صديقي الجديد!</string>
+    <string name="ssn">الرقم القومي</string>
+    <string name="phone">الجوال</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="select_a_profile_image">اختر صورة للملف الشخصي</string>
+    <string name="confirm">تأكيد</string>
+    <string name="start_journey">بدأ الرحلة</string>
+    <string name="current_location">الموقع الحالي</string>
+    <string name="nearby">بالقرب منك</string>
+    <string name="enter_destination">حدد وجهتك</string>
+    <string name="enable_location">فعل تحديد الموقع....</string>
+
+</resources>

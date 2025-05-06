@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/placeCard"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:backgroundTint="@color/primaryDark"
+    app:cardCornerRadius="11dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:background="@drawable/place_card"
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/placeImage"
+            android:scaleType="centerCrop"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@color/primary"
+            app:shapeAppearanceOverlay="@style/LocB"/>
+
+
+        <TextView
+            android:id="@+id/placeName"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:maxLength="25"
+            android:fontFamily="@font/font"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+        android:layout_height="wrap_content"
+        android:text="Rest Stop Cafe"/>
+        <TextView
+            android:id="@+id/placeClass"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="match_parent"
+            android:textSize="12sp"
+            android:fontFamily="@font/font"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="Cafe"/>
+        <TextView
+            android:id="@+id/placeDistance"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/text_field_bg"
+            android:backgroundTint="@color/primary"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textSize="12sp"
+            android:fontFamily="@font/font"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content"
+            android:text="100 Metre ahead"/>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

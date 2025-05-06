@@ -1,0 +1,103 @@
+[
+  {
+    // الخلفية العامة للخريطة
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#313244" } // background
+    ]
+  },
+  {
+    // نصوص اللابلز
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#00BFFF" } // roadText
+    ]
+  },
+  {
+    // حدود اللابلز
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      { "color": "#1E1E2E" } // road
+    ]
+  },
+  {
+    // الإدارات والمباني الحكومية
+    "featureType": "administrative",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#ED91D5" } // administrative (بعد إزالة الشفافية)
+    ]
+  },
+  {
+    // الطرق العادية
+    "featureType": "road",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#1E1E2E" } // road
+    ]
+  },
+  {
+    // نصوص الطرق العادية
+    "featureType": "road",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#00BFFF" } // roadText
+    ]
+  },
+  {
+    // الطرق السريعة
+    "featureType": "road.highway",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#747475" } // roadHigh
+    ]
+  },
+  {
+    // نصوص الطرق السريعة
+    "featureType": "road.highway",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#00C4FF" } // roadTextHigh
+    ]
+  },
+  {
+    // أماكن الاهتمام (POI)
+    "featureType": "poi",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#9A97F3" } // تقريب للـ @color/secondary
+    ]
+  },
+  {
+    // نصوص أماكن الاهتمام
+    "featureType": "poi",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#FFFFFF" } // poiText
+    ]
+  },
+  {
+    // المواصلات (مترو، أتوبيسات...)
+    "featureType": "transit",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#CB0BED" } // تقريب من F2CB0BED
+    ]
+  },
+  {
+    // المياه (أنهار، بحار)
+    "featureType": "water",
+    "elementType": "geometry",
+    "stylers": [
+      { "color": "#13131B" } // water
+    ]
+  },
+  {
+    // نصوص المياه
+    "featureType": "water",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      { "color": "#4787CF" } // waterText
+    ]
+  }
+]

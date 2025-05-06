@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#F6F5F2</color>
+    <color name='primary'>#289EFB</color>
+    <color name='secondary'>#ED91D5</color>
+    <color name='primaryDark'>#1E2129</color>
+    <color name='third'>#9FA9B5</color>
+
+    <!-- hint Colors -->
+    <color name="safe">#05E670</color>
+    <color name="focus">#F0CD1F</color>
+    <color name="inDanger">#ED7E1D</color>
+    <color name="emergency">#E24838</color>
+    <!-- map Colors -->
+
+</resources>
