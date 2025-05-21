@@ -1,7 +1,12 @@
 package com.example.safego.dataSource.local.sharedPrefrences
 
 import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.safego.dataSource.local.model.User
+import java.io.File
+import java.io.FileOutputStream
 
 class SharedPref(context: Context) {
     private val sharedPreferences = context.getSharedPreferences("profile", Context.MODE_PRIVATE)
@@ -9,7 +14,7 @@ class SharedPref(context: Context) {
 
 
 
-    fun saveProfileData(imagePath:String,
+    fun saveProfileData(
                         name:String,
                         ssn:String,
                         phone:String,
@@ -17,7 +22,6 @@ class SharedPref(context: Context) {
                         password: String,
                         login:Boolean)
     {
-        sharedPreferences.edit().putString("image", imagePath).apply()
         sharedPreferences.edit().putString("name", name).apply()
         sharedPreferences.edit().putString("ssn", ssn).apply()
         sharedPreferences.edit().putString("phone", phone).apply()
@@ -43,5 +47,8 @@ class SharedPref(context: Context) {
         val lat = currentLocPref.getString("lat","") ?: ""
         val lng = currentLocPref.getString("lng","") ?: ""
         return Pair(lat,lng)
+    }
+    fun saveProfileImage(pathInTheInternalStorage:String){
+        sharedPreferences.edit().putString("image", pathInTheInternalStorage).apply()
     }
 }

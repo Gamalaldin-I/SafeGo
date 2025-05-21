@@ -74,7 +74,7 @@ object Animator {
         cardView.visibility = VISIBLE
         cardView.animate()
             .translationY(0f)
-            .alpha(0.85f)
+            .alpha(1f)
             .setDuration(500)
             .setInterpolator(AccelerateDecelerateInterpolator())
             .start()
@@ -88,6 +88,33 @@ object Animator {
             .withEndAction { cardView.visibility = GONE }
             .start()
     }
+    fun animateConstraintSplashView(splashView: View, duration: Long = 1000, onEnd: () -> Unit = {}) {
+        splashView.animate().apply {
+            scaleX(0.9f)
+            scaleY(0.9f)
+            translationY(60f)
+            translationX(60f)
+            rotation(10f)
+            setDuration(500).withEndAction{
+                splashView.animate()
+                    .alpha(0f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .rotation(0f)
+                    .translationY(0f)
+                    .translationX(0f)
+                    .setDuration(duration)
+                    .withEndAction {
+                        onEnd()
+                    }
+                    .start()
+            }
+        }.start()
+
+
+    }
+
+
 
 
 

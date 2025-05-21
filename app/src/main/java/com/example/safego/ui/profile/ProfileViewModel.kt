@@ -17,6 +17,13 @@ class ProfileViewModel : ViewModel() {
     private var _profileData = MutableLiveData<ProfileData>()
     val profileData :LiveData<ProfileData> = _profileData
 
+    private val selectedImageUri = MutableLiveData<String>()
+    val selectedImageUriLiveData: LiveData<String> get() = selectedImageUri
+
+    fun setSelectedImageUri(uri: String) {
+        selectedImageUri.value = uri
+    }
+
 
     fun setProfileData(sharedPref: SharedPref) {
         // Retrieve user data from SharedPreferences
@@ -41,10 +48,9 @@ class ProfileViewModel : ViewModel() {
     fun getUserDataFromSharedPref(sharedPref: SharedPref): User {
        return sharedPref.getProfileData()
    }
-    private fun saveNewUserData(imagePath: String, name: String, ssn: String, phone: String, email: String, password: String, context: Context){
+    private fun saveNewUserData( name: String, ssn: String, phone: String, email: String, password: String, context: Context){
         val sharedPref = SharedPref(context)
         sharedPref.saveProfileData(
-            imagePath = imagePath,
             name = name,
             ssn = ssn,
             phone = phone,
@@ -71,7 +77,6 @@ class ProfileViewModel : ViewModel() {
             Toast.makeText(context, "Updated", Toast.LENGTH_SHORT).show()
             //save new data
             saveNewUserData(
-                imagePath = imagePath,
                 name = name,
                 ssn = ssn,
                 phone = phone,

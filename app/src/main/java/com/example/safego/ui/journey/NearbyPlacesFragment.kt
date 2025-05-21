@@ -1,60 +1,111 @@
 package com.example.safego.ui.journey
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.safego.R
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.safego.databinding.FragmentNearbyPlacesBinding
+import com.example.safego.domain.useCaseModel.NearbyPlace
+import com.example.safego.util.adapters.PlacesAdapter
+import com.example.safego.util.helpers.singlton.Animator.animateFadeIn
+import com.example.safego.util.helpers.singlton.Animator.animateFadeOut
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NearbyPlacesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NearbyPlacesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val journeyViewModel: JourneyActivityViewModel by activityViewModels {
+        ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
     }
+    private lateinit var listener: NearbyClickListener
+    companion object{
+    fun getInstance(
+        currentLocation:LatLng,
+        listener: NearbyClickListener
+    ): NearbyPlacesFragment {
+        val fragment = NearbyPlacesFragment()
+        val args = Bundle()
+        args.putDouble("lat", currentLocation.latitude)
+        args.putDouble("long", currentLocation.longitude)
+        fragment.arguments = args
+        fragment.listener = listener
+        return fragment
+    }
+    }
+    private lateinit var binding: FragmentNearbyPlacesBinding
+    private  var lat : Double = 0.0
+    private var long :Double = 0.0
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nearby_places, container, false)
+    ): View {
+        binding = FragmentNearbyPlacesBinding.inflate(inflater, container, false)
+        lat = arguments?.getDouble("lat")!!
+        long = arguments?.getDouble("long")!!
+        binding.placesRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NearbyPlacesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NearbyPlacesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeNearbyPlaces()
+    }
+
+    @SuppressLint("SetTextI18n")
+     fun observeNearbyPlaces() {
+            journeyViewModel.nearbyPlaces.observe(viewLifecycleOwner) { places ->
+                journeyViewModel.saveCurrentLocation(lat.toString(), long.toString(), requireContext())
+                setupRecycler(places)
+        }
+     }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupRecycler(listOfPlaces: ArrayList<NearbyPlace>) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                if (listOfPlaces.isEmpty()) {
+                    animateFadeIn(binding.message)
+                    binding.message.text = "No places found"
+                    animateFadeOut(binding.placesRecycler)
+                } else {
+                    Toast.makeText(requireContext(), "get places", Toast.LENGTH_SHORT).show()
+                    animateFadeOut(binding.message)
+                    binding.placesRecycler.adapter = PlacesAdapter(listOfPlaces){
+                        listener.onClick(it)
+                    }
+                    animateFadeIn(binding.placesRecycler)
                 }
             }
+        }}
+
+    private fun <T> LiveData<T>.observeOnce(
+        lifecycleOwner: LifecycleOwner,
+        observer: Observer<T>
+    ) {
+        observe(lifecycleOwner, object : Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer.onChanged(value)
+            }
+        })
     }
+
+
 }

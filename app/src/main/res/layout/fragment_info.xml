@@ -1,217 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/info_fragment_bg"
     android:padding="16dp"
-    tools:context=".ui.journey.InfoFragment">
+    tools:context=".ui.journey.InfoFragment"
+    tools:ignore="ExtraText">
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/predictionTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/font"
+        android:text="PAT : 00:00"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vGL" />
+
+    <com.github.anastr.speedviewlib.PointerSpeedometer
+        android:id="@+id/speed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/predictionTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/vGL"
+        app:layout_constraintTop_toTopOf="@+id/cardView2"
+        app:sv_backgroundCircleColor="@color/primaryDark"
+        app:sv_indicatorColor="@color/primary"
+        app:sv_maxSpeed="10"
+        app:sv_minSpeed="0"
+        app:sv_pointerColor="@color/primary"
+        app:sv_speedTextColor="@color/white"
+        app:sv_speedTextSize="15sp"
+        app:sv_textSize="12sp"
+        app:sv_unit="Km/h"
+        app:sv_unitTextColor="@color/primary" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hGL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vGL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        app:layout_constraintGuide_percent="0.7" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:backgroundTint="#1E1E2E"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/vGL"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/destination"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="From Mit Ghamr to Zagazig"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/cardView3"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="12dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/destination_hard_angle"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_margin="10dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/location_pin"
-                    />
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Destination"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/font" />
-
-                <TextView
-                    android:id="@+id/destination"
+                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Zagazig"
-                    android:maxLength="30"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/font" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_margin="10dp"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/location_pin"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Location"
+                    android:fontFamily="@font/font"
+                    android:maxLength="20"
+                    android:text="@string/current_location"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/font" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/currentLoc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mit Ghamr"
                     android:layout_marginEnd="10dp"
-                    android:textSize="14sp"
-                    android:maxLength="30"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/font" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_timer"
-                    android:layout_margin="10dp"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Time"
+                    android:fontFamily="@font/font"
+                    android:gravity="end"
+                    android:maxLength="19"
+                    android:maxLines="1"
+                    android:text="Mit ghame"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:fontFamily="@font/font" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/predictionTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="45 min"
-                    android:maxLength="20"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/font" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical">
+                android:backgroundTint="@color/primaryDark"
+                app:cardCornerRadius="7dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_distance"
-                    android:layout_margin="10dp"
-                    app:tint="@color/white" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/distance_card_bg"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Distance"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/font" />
 
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="45 km"
-                    android:maxLength="20"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/font" />
-            </LinearLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/white"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_speed"
-                    android:layout_margin="10dp"
-                    app:tint="@color/white" />
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/font"
+                            android:gravity="end"
+                            android:text="Distance"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Speed"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/font" />
 
-                <TextView
-                    android:id="@+id/speed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="80 KMH"
-                    android:maxLength="20"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary"
-                    android:fontFamily="@font/font" />
-            </LinearLayout>
+                    <ProgressBar
+                        android:id="@+id/progressBar3"
+                        style="@style/Widget.Material3.LinearProgressIndicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:progressDrawable="@drawable/progress_bar_bg"
+                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                        tools:layout_editor_absoluteX="16dp" />
 
-        <!-- Distance & Drift cards here similarly -->
+                    <TextView
+                        android:id="@+id/percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/designer"
+                        android:gravity="start"
+                        android:text="50.5%"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/progressBar3"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/progressBar3" />
 
-    </LinearLayout>
-</ScrollView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_editor_absoluteX="16dp">
+
+
+
+                        <TextView
+                            android:id="@+id/totalDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/font"
+                            android:gravity="end"
+                            android:text="400 km"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/font"
+                            android:gravity="end"
+                            android:text="200 km"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

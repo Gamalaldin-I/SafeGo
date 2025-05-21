@@ -10,8 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.safego.R
+import com.example.safego.dataSource.local.AppInfo
 import com.example.safego.databinding.FragmentMapBinding
 import com.example.safego.ui.map.MapViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -32,8 +36,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapBinding
     private lateinit var mMap: GoogleMap
     private val mapViewModel: MapViewModel by viewModels()
-    private lateinit var journeyViewModel: JourneyActivityViewModel
-
+    private val journeyViewModel: JourneyActivityViewModel by activityViewModels {
+        ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+    }
     private var myMarker: Marker? = null
     private lateinit var sensorManager: SensorManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -41,6 +46,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var currentLoc: LatLng = LatLng(0.0, 0.0)
     private var destinationLoc: LatLng = LatLng(0.0, 0.0)
     private var polyline: String = ""
+    private var vehicleType: String = ""
     private var counter = 0
 
     companion object {
@@ -50,7 +56,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             currentLocLat: Double,
             currentLocLong: Double,
             polyline: String,
-            journeyViewModel: JourneyActivityViewModel
+            vehicleType: String,
         ): MapFragment {
             val fragment = MapFragment()
             val bundle = Bundle().apply {
@@ -60,8 +66,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 putDouble("currentLocLong", currentLocLong)
                 putString("polyline", polyline)
             }
-            fragment.journeyViewModel = journeyViewModel
             fragment.arguments = bundle
+            fragment.vehicleType = vehicleType
             return fragment
         }
     }
@@ -109,7 +115,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapViewModel.drawRoute(polyline, mMap, requireContext())
     }
 
-    private suspend fun updateTrack(start: LatLng, end: LatLng) {
+    private suspend fun updateTrackAndDetailsAndNearByPlaces(start: LatLng, end: LatLng) {
         counter++
         val (duration, distance, polyline) = mapViewModel.getDurationAndDistanceOfDestination1(
             start, end, requireContext()
@@ -117,16 +123,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         this.polyline = polyline
         withContext(Dispatchers.Main) {
             drawRoute()
-            journeyViewModel.getJourneyDetails(duration, "$distance counter:$counter", start, end)
+            journeyViewModel.getJourneyDetails("$duration counter:$counter", distance, start, end,vehicleType)
+            journeyViewModel.getPlaces(
+                start.latitude.toString(),
+                start.longitude.toString(),
+                requireContext(),
+                requireActivity(),
+            )
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    fun updateCurrentLocation() {
-        GlobalScope.launch {
+    suspend fun updateCurrentLocation() {
             currentLoc = journeyViewModel.getUserLocationPair(requireContext(), requireActivity())
-            updateTrack(currentLoc, destinationLoc)
-        }
+            updateTrackAndDetailsAndNearByPlaces(currentLoc, destinationLoc)
+
     }
 
 }

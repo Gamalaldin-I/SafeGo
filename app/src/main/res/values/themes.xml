@@ -42,7 +42,7 @@
     </style>
     <style name="LocB" parent="">
         <item name ="cornerFamily">rounded</item>
-        <item name ="cornerSize">10%</item>
+        <item name ="cornerSize">20%</item>
     </style>
 
     <style name="infoText" parent="">

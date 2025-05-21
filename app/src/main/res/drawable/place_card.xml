@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/primaryDark"/>
-    <corners android:radius="10dp"/>
-    <gradient android:angle="90"
-        android:centerColor="#033488CB"
-        android:endColor="#D8ED91D5"
-        android:startColor="@color/primaryDark"/>
-    <stroke android:color="@color/secondary" android:width="0.5dp"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- خلفية Gradient بزاوية -->
+    <item>
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="-45"
+                android:startColor="@color/secondary"
+                android:endColor="@color/primary" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+    <!-- تأثير Radial كأنه منور من فوق -->
+    <item android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="300"
+                android:centerX="0.5"
+                android:centerY="1"
+                android:startColor="#5C3F71"
+                android:centerColor="#FA1F2241"
+                android:endColor="#12121F" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+</layer-list>

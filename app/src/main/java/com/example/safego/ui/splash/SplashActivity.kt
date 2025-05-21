@@ -21,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
         enableEdgeToEdge()
         prefs = SharedPref(this)
         binding = ActivitySplashBinding.inflate(layoutInflater)
-        binding.message.text = viewModel.getRandomDriverSafetyMessage()
         //call functions
 
 
@@ -34,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
                     handleGoingToTheNext()
                 }
             }
-        }, 0 ) //3000
+        }, 500 ) //3000
 
 
     }

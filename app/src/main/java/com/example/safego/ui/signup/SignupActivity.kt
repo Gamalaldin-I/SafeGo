@@ -98,7 +98,7 @@ class SignupActivity : AppCompatActivity() {
         else if (thirdInfoFragment.allDone()){
             Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
             setData()
-            sendData()
+            sendDataToApi()
             finish()
             startActivity(Intent(this, MainActivity::class.java))
         }
@@ -123,16 +123,15 @@ class SignupActivity : AppCompatActivity() {
         }
     }
     private fun setData(){
-        name = firstInfoFragment.getData().first
+        name = firstInfoFragment.getData().first.trim()
         ssn = firstInfoFragment.getData().second
         phone = firstInfoFragment.getData().third
-        email = secondInfoFragment.getData().first
+        email = secondInfoFragment.getData().first.trim()
         password = secondInfoFragment.getData().second
-        imageUri = thirdInfoFragment.getData()
-        pref.saveProfileData(imageUri,name,ssn,phone,email,password,true)
+        pref.saveProfileData(name,ssn,phone,email,password,true)
         Toast.makeText(this, "Account has been created successfully", Toast.LENGTH_SHORT).show()
     }
-    private fun sendData(){
+    private fun sendDataToApi(){
 
 
     }

@@ -3,7 +3,7 @@
     // الخلفية العامة للخريطة
     "elementType": "geometry",
     "stylers": [
-      { "color": "#313244" } // background
+      { "color": "#1E1E2E" } // background
     ]
   },
   {
@@ -33,7 +33,7 @@
     "featureType": "road",
     "elementType": "geometry",
     "stylers": [
-      { "color": "#1E1E2E" } // road
+      { "color": "#313244"} // road
     ]
   },
   {
@@ -41,7 +41,7 @@
     "featureType": "road",
     "elementType": "labels.text.fill",
     "stylers": [
-      { "color": "#00BFFF" } // roadText
+      { "color": "#00BFFF"} // roadText
     ]
   },
   {
@@ -49,7 +49,7 @@
     "featureType": "road.highway",
     "elementType": "geometry",
     "stylers": [
-      { "color": "#747475" } // roadHigh
+      { "color": "#747475"} // roadHigh
     ]
   },
   {
@@ -57,7 +57,7 @@
     "featureType": "road.highway",
     "elementType": "labels.text.fill",
     "stylers": [
-      { "color": "#00C4FF" } // roadTextHigh
+      { "color": "#00C4FF"} // roadTextHigh
     ]
   },
   {

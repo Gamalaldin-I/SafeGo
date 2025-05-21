@@ -15,9 +15,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.safego.dataSource.local.model.Destination
+import com.example.safego.dataSource.local.repo.LocalRepoImp
 import com.example.safego.databinding.ActivityMapBinding
 import com.example.safego.domain.useCaseModel.LocationAddress
-import com.example.safego.domain.useCases.currentLocation.CurrentLocationProvider
+import com.example.safego.domain.useCases.currentLocation.GetCurrentLocationUseCase
 import com.example.safego.domain.useCases.googleMapFeatures.MapDirector
 import com.example.safego.util.adapters.LocationsAdapter
 import com.google.android.gms.maps.GoogleMap
@@ -35,6 +37,8 @@ class MapViewModel :ViewModel() {
     val currentLocationPair: LiveData<LatLng> get() = _currentLocationPair
     private val _desInformation = MutableLiveData<Triple<String,String,String>>()
     val desInformation: LiveData<Triple<String,String,String>> = _desInformation
+    private val _savedLocations = MutableLiveData<ArrayList<Destination>>()
+    val savedLocations: LiveData<ArrayList<Destination>> = _savedLocations
 
     //Feature1: Mark and go to location after search or get the location from mic
     fun searchAndGoToLocation(
@@ -79,7 +83,7 @@ class MapViewModel :ViewModel() {
 
     fun getUserLocationPair(context: Context, activity: FragmentActivity) {
         viewModelScope.launch {
-            val locationPair = CurrentLocationProvider(context, activity).getPairOfCurrentLoc()
+            val locationPair = GetCurrentLocationUseCase(context, activity).getPairOfCurrentLoc()
             _currentLocationPair.postValue(locationPair)
         }
     }
@@ -136,5 +140,49 @@ class MapViewModel :ViewModel() {
         }
         mapDirector.drawPolyline(polyline =polyline, map = map )
     }
+    fun insertNewDestination(name:String,latitude:Double,longitude:Double,localRepo: LocalRepoImp){
+        val maximumSavings = 100
+        val newDestination = Destination(
+            name = name,
+            latitude = latitude,
+            longitude = longitude
+        )
+        viewModelScope.launch {
+            val lengthOfDestinationList = localRepo.getAllDestinations().size
+            if (lengthOfDestinationList>=maximumSavings){
+                deleteDestination(localRepo.getAllDestinations()[0],localRepo)
+            }
+            localRepo.insertDestination(newDestination)
+        }
+    }
+    fun deleteDestination(destination: Destination, localRepo: LocalRepoImp){
+        viewModelScope.launch {
+            localRepo.deleteDestination(destination.name)
+        }
+    }
+    fun getAllSavedLocations(localRepo: LocalRepoImp){
+        viewModelScope.launch {
+            _savedLocations.postValue(localRepo.getAllDestinations()as ArrayList<Destination>)
+        }
+    }
+    fun deleteAllDestinations(localRepo: LocalRepoImp){
+        viewModelScope.launch {
+            localRepo.deleteAllDestinations()
+        }
+    }
+
+    fun goToSavedLocation(destination:Destination,context: Context,map: GoogleMap){
+        mapDirector.goTOLocation(
+            LatLng(
+                destination.latitude,
+                destination.longitude
+            ),
+            destination.name,context,map
+        )
+    }
+
+
+
+
 
 }

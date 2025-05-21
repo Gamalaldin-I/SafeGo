@@ -2,7 +2,7 @@ package com.example.safego.domain.useCases.distance
 
 import android.location.Location
 
-object DistanceMeasure {
+object GetDistanceMeasureUseCase {
     fun calculateDistance(
         userLat: Double, userLng: Double,
         placeLat: Double, placeLng: Double

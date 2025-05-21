@@ -13,23 +13,29 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/searchCard"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/primaryDark"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="85dp"
             android:layout_marginEnd="20dp"
-            android:backgroundTint="#313244"
             app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
 
             <LinearLayout
+                android:background="@drawable/main_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layoutDirection="ltr"
@@ -55,6 +61,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:maxLines="1"
+                    android:fontFamily="@font/designer"
                     android:text="@string/search_here"
                     android:textSize="18sp" />
 
@@ -81,10 +88,12 @@
 
         </androidx.cardview.widget.CardView>
 
+
         <FrameLayout
-            android:layout_marginTop="25dp"
+            android:id="@+id/fMap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,18 +103,46 @@
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
         </FrameLayout>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/lastSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/start_journey_btn_bg"
+            android:drawableStart="@drawable/ic_timer"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/designer"
+            android:paddingStart="10dp"
+            android:paddingEnd="15dp"
+            android:text="History"
+            app:layout_constraintEnd_toEndOf="@+id/searchCard"
+            app:layout_constraintTop_toBottomOf="@+id/searchCard" />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="@font/designer"
+            android:padding="15dp"
+            android:text="Select your destination"
+            android:background="@drawable/start_journey_btn_bg"
+            android:layout_marginTop="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <ImageView
-            android:visibility="gone"
             android:id="@+id/directionBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="TODO"
             android:src="@drawable/direction_curve"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/searchCard"
             app:layout_constraintTop_toBottomOf="@+id/searchCard"
             tools:ignore="OnClick" />
@@ -184,18 +221,19 @@
             android:layout_height="match_parent"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
+            android:background="@drawable/start_journey_btn_bg"
             android:paddingEnd="20dp"
             android:paddingBottom="20dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/hideBtn"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-                android:backgroundTint="#44444F"
                 android:fontFamily="@font/font"
                 android:gravity="center"
+                android:background="@color/primaryDark"
                 android:text="X"
-                android:textColor="@color/primaryDark"
+                android:textColor="@color/secondary"
                 android:textSize="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -211,8 +249,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/hideBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/hideBtn" />
-
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -230,13 +266,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/text_field_bg"
-                android:backgroundTint="@color/secondary"
+                android:background="@drawable/destination_bg"
                 android:fontFamily="@font/font"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="Alex"
-                android:textColor="@color/white"
+                android:textColor="@color/primaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/hideBtn" />
@@ -247,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/search_bar_bg"
-                android:backgroundTint="#44444F"
+                android:backgroundTint="#313244"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -281,22 +316,79 @@
 
             </LinearLayout>
 
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout7">
+                <RadioButton
+                    android:id="@+id/carRB"
+                    android:layout_weight="1"
+                    android:text="Car"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:textColor="@color/white"
+                    android:background="@drawable/radio_btn_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTint="@color/white"
+                    android:drawableStart="@drawable/icon_car"/>
+                <RadioButton
+                    android:id="@+id/truckRB"
+                    android:background="@drawable/radio_btn_bg"
+                    android:layout_weight="1"
+                    android:text="Truck"
+                    android:gravity="center"
+                    android:button="@android:color/transparent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/icon_truck"
+                    android:drawableTint="@color/white"/>
+                <RadioButton
+                    android:id="@+id/busRB"
+                    android:layout_weight="1"
+                    android:text="Bus"
+                    android:gravity="center"
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/radio_btn_bg"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:drawableStart="@drawable/icon_bus"
+                    android:drawableTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RadioGroup>
+
             <Button
                 android:id="@+id/startJourney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:fontFamily="@font/font"
                 android:text="Start Journey"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
                 android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

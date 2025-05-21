@@ -30,7 +30,7 @@
     <string name="current_location">Current Location</string>
     <string name="start_journey">Start journey</string>
     <string name="nearby">Nearby</string>
-    <string name="enter_destination">Enter destination</string>
+    <string name="enter_destination">Start Journey</string>
     <string name="enable_location">Enable location ...</string>
     <string name="ops_no_internt_connection">OPS! No Internt Connection</string>
     <string name="google_maps_key">AIzaSyDJ8xWvWQTRK7ivBcqFCmlGg9Mp-dpfSQ4</string>

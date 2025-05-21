@@ -1,122 +1,132 @@
 package com.example.safego.ui.signup
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.annotation.SuppressLint
-import android.content.Intent
+import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity.RESULT_OK
-import androidx.core.app.ActivityCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import com.example.safego.dataSource.local.sharedPrefrences.SharedPref
 import com.example.safego.databinding.FragmentThirdInfoBinding
 import com.example.safego.util.helpers.singlton.Animator
+import com.example.safego.util.helpers.singlton.AppManager
+import com.example.safego.util.helpers.singlton.DialogBuilder
+import java.io.File
 
 class ThirdInfoFragment : Fragment() {
-    private lateinit var binding: FragmentThirdInfoBinding
+
+    private var _binding: FragmentThirdInfoBinding? = null
+    private val binding get() = _binding!!
+
     private var imageUri: String? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
+    private var cameraImageUri: Uri? = null
+    private var pref: SharedPref? = null
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 100
+    }
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success && cameraImageUri != null && pref != null) {
+            handelAfterSelectingPhoto(cameraImageUri!!)
         }
     }
 
-    companion object {
-        const val GALLERY_REQUEST_CODE = 101
-        var PERMISSION_REQUEST_CODE = 100
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null && pref != null) {
+          handelAfterSelectingPhoto(uri)
+        }
+    }
+    private fun  handelAfterSelectingPhoto(uri: Uri){
+        AppManager.saveOrUpdateImageFile(requireContext(),uri)
+        binding.profileImage.setImageURI(uri)
+        saveProfileImageUri(uri.toString())
+    }
+    private fun openCamera() {
+        try {
+            val imageFile = File.createTempFile("profile_", ".jpg", requireContext().cacheDir)
+            cameraImageUri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                imageFile
+            )
+            cameraLauncher.launch(cameraImageUri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
+
+    private fun isCameraPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+
+    private fun checkAndRequestPermissions() {
+        val permissions = mutableListOf<String>()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (!isCameraPermissionGranted()) {
+            permissions.add(Manifest.permission.CAMERA)
+        }
+
+        if (permissions.isNotEmpty()) {
+            requestPermissions(permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
-        //inflate
-        binding = FragmentThirdInfoBinding.inflate(inflater, container, false)
+        _binding = FragmentThirdInfoBinding.inflate(inflater, container, false)
+        pref = SharedPref(requireContext())
         setControllers()
         checkAndRequestPermissions()
         return binding.root
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setControllers() {
         binding.profileImage.setOnClickListener {
             Animator.animateTxt(binding.profileImage) {
-            pickImage()
-            }
-        }
-
-    }
-
-    @SuppressLint("IntentReset")
-    private fun pickImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
-    }
-
-
-    private fun checkAndRequestPermissions() {
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(READ_MEDIA_IMAGES)
-        } else {
-            arrayOf(READ_EXTERNAL_STORAGE)
-        }
-        // فحص الأذونات دفعة واحدة وطلبها إذا لزم الأمر
-        ActivityCompat.requestPermissions(requireActivity(), permissions, PERMISSION_REQUEST_CODE)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+                DialogBuilder.pickImageDialog(
+                    requireContext(),
+                    onCameraSelected = {
+                        if (isCameraPermissionGranted()) {
+                            openCamera()
+                        }
+                    },
+                    onGallerySelected = {
+                        galleryLauncher.launch("image/*")
+                    }
+                )
             }
         }
     }
-    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            if (selectedImageUri != null) {
-                // تعيين الصورة في ImageView
-                binding.profileImage.setImageURI(selectedImageUri)
-
-                saveProfileImageUri(selectedImageUri.toString())
-            }
-        }
-    }
+    /*this function to make the imageUri not empty and
+    tell the activity all is done after selecting the image.*/
     private fun saveProfileImageUri(uri: String) {
         imageUri = uri
-    }
-    fun getData(): String {
-        return imageUri!!
     }
 
     fun allDone(): Boolean {
         return imageUri != null
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,13 +9,16 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.safego.R
+import com.example.safego.dataSource.local.AppInfo
 import com.example.safego.domain.useCaseModel.NearbyPlace
 import com.example.safego.util.helpers.singlton.PlacesClientProvider
-import com.example.safego.domain.useCases.distance.DistanceMeasure.calculateDistance
+import com.example.safego.domain.useCases.distance.GetDistanceMeasureUseCase.calculateDistance
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -23,17 +26,25 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @Suppress("DEPRECATION")
-class NearByPlacesService(
-    private val currentLocationLat: String,
-    private val currentLocationLng: String,
-    private val context: Context,
-    private val contextA:FragmentActivity,
-    apiKey: String
-){
-    private val placesClient = PlacesClientProvider.getClient(context, apiKey)
+object GetNearByPlacesUseCase{
+    private var currentLocationLat = ""
+    private var currentLocationLng = ""
+    private var placesClient : PlacesClient ? =null
+    private fun returnClient(context: Context) : PlacesClient {
+        if (placesClient == null){
+            placesClient = PlacesClientProvider.getClient(context, AppInfo.googleMapKay)
+        }
+        return placesClient!!
+    }
 
 
-    suspend fun getNearByPlaces(): ArrayList<NearbyPlace> {
+    suspend fun getNearByPlaces(context: Context,
+                                contextA: FragmentActivity,
+                                currentLocationLat: String,
+                                currentLocationLng: String
+    ): ArrayList<NearbyPlace> {
+        this.currentLocationLat = currentLocationLat
+        this.currentLocationLng = currentLocationLng
         val placeFields = listOf(
             Place.Field.NAME,
             Place.Field.LAT_LNG,
@@ -59,12 +70,12 @@ class NearByPlacesService(
         // Wait for the result using suspendCoroutine
         return try{withContext(Dispatchers.IO) {
             suspendCancellableCoroutine { cont ->
-                val task = placesClient.findCurrentPlace(request)
+                val task = returnClient(context).findCurrentPlace(request)
                 task.addOnSuccessListener { response ->
                     val result = arrayListOf<NearbyPlace>()
                     for (placeLikelihood in response.placeLikelihoods) {
                         result.add(assignNearByPlace(placeLikelihood))
-                        Log.i("Place", "Place Name: ${placeLikelihood.place.name}")
+                        Log.i("Place", "Place name: ${placeLikelihood.place.name}")
                     }
                     cont.resume(result)
                 }.addOnFailureListener { exception ->
@@ -86,6 +97,7 @@ class NearByPlacesService(
         val p = place!!.place
         val nearbyPlace =
             NearbyPlace(
+                p.latLng?: LatLng(30.7003668 ,31.26697440000001),
                 name = p.name?:"unKnown",
                 type = p.types?.toString()?:tryWithNameToGetImage(p.name?:"unknown").second,
                 distance = handleDistance(place),
@@ -157,7 +169,7 @@ class NearByPlacesService(
             "سوبرماركت","ماركت" -> Pair(R.drawable.market,"market")
 
 
-            else -> Pair(R.drawable.unknown,"unknown")
+            else -> Pair(R.drawable.bg11,"unknown")
         }
     }
 

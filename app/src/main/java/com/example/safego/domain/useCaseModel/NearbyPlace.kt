@@ -1,6 +1,9 @@
 package com.example.safego.domain.useCaseModel
 
+import com.google.android.gms.maps.model.LatLng
+
 data class NearbyPlace(
+    val latLng: LatLng,
     val name :String,
     val type :String,
     val distance :String,

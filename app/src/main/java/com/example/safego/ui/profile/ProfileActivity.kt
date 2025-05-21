@@ -16,7 +16,6 @@ import android.provider.MediaStore
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -26,6 +25,7 @@ import com.example.safego.dataSource.local.model.User
 import com.example.safego.dataSource.local.sharedPrefrences.SharedPref
 import com.example.safego.databinding.ActivityProfileBinding
 import com.example.safego.domain.useCaseModel.ProfileData
+import com.example.safego.util.helpers.singlton.AppManager
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 
@@ -108,7 +108,6 @@ class ProfileActivity : AppCompatActivity() {
         } else {
             arrayOf(READ_EXTERNAL_STORAGE)
         }
-        // فحص الأذونات دفعة واحدة وطلبها إذا لزم الأمر
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE)
     }
 
@@ -130,7 +129,6 @@ class ProfileActivity : AppCompatActivity() {
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
             if (selectedImageUri != null) {
-                // تعيين الصورة في ImageView
                 profileIv.setImageURI(selectedImageUri)
                 saveProfileImageUri(selectedImageUri.toString())
             }
@@ -147,13 +145,13 @@ class ProfileActivity : AppCompatActivity() {
         editDialog.setCancelable(true)
         editDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-         profileIv = editDialog.findViewById(R.id.profileIv)
-         userNameLayout = editDialog.findViewById(R.id.userNameLayout)
-         ssnLayout = editDialog.findViewById(R.id.ssnLayout)
-         phoneLayout = editDialog.findViewById(R.id.phoneLayout)
-         emailLayout = editDialog.findViewById(R.id.emailLayout)
-         passwordLayout = editDialog.findViewById(R.id.passwordLayout)
-         val confirmBtn = editDialog.findViewById<Button>(R.id.confirmBtn)
+        profileIv = editDialog.findViewById(R.id.profileIv)
+        userNameLayout = editDialog.findViewById(R.id.userNameLayout)
+        ssnLayout = editDialog.findViewById(R.id.ssnLayout)
+        phoneLayout = editDialog.findViewById(R.id.phoneLayout)
+        emailLayout = editDialog.findViewById(R.id.emailLayout)
+        passwordLayout = editDialog.findViewById(R.id.passwordLayout)
+        val confirmBtn = editDialog.findViewById<Button>(R.id.confirmBtn)
 
         profileIv.setImageURI(user.imagePath.toUri())
         userNameLayout.editText?.setText(user.name)
@@ -174,13 +172,14 @@ class ProfileActivity : AppCompatActivity() {
                     userNameLayout,phoneLayout,
                     ssnLayout,this)) {
                 editDialog.dismiss()
-                    viewModel.setProfileData(pref)
-                    viewModel.profileData.observe(this) {
+                viewModel.setProfileData(pref)
+                viewModel.profileData.observe(this) {
                     setView(it)
+                    binding.profileImage.setImageURI(imagePath)
+                    AppManager.saveOrUpdateImageFile(this,imagePath)
                 }
             }
         }
-
         editDialog.show()
     }
 

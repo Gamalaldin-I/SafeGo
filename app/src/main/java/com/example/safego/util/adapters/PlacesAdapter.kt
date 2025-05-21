@@ -9,7 +9,7 @@ import com.example.safego.R
 import com.example.safego.databinding.PlaceCardBinding
 import com.example.safego.domain.useCaseModel.NearbyPlace
 
-class PlacesAdapter(private val data: ArrayList<NearbyPlace>) :
+class PlacesAdapter(private val data: ArrayList<NearbyPlace>,private var onItemClick: (NearbyPlace) -> Unit ={}) :
     RecyclerView.Adapter<PlacesAdapter.PlaceHolder>() {
 
     // Create ViewHolder class
@@ -33,8 +33,11 @@ class PlacesAdapter(private val data: ArrayList<NearbyPlace>) :
             item.name
         }
         binding.placeClass.text = item.type
-        binding.placeDistance.text = "${item.distance}m"
+        binding.placeDistance.text = "${item.distance} m"
         binding.placeImage.setImageResource(item.image)
+        binding.root.setOnClickListener {
+            onItemClick(item)
+        }
 
     }
 

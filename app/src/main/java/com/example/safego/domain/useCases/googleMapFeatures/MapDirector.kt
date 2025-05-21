@@ -15,8 +15,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.safego.R
 import com.example.safego.dataSource.local.AppInfo
 import com.example.safego.dataSource.remote.RetrofitBuilder
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -31,10 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import kotlin.contracts.contract
 
 class MapDirector {
     //vars
@@ -69,8 +65,24 @@ class MapDirector {
 
         }
     }
+    fun goTOLocation(latLng: LatLng,locationName: String, context: Context, mMap: GoogleMap) {
+        mMap.clear()
+        mMap.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title(locationName)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
+    }
     //Mark The Current Location
-    fun markLastLocationOnMap(context: Context,contextA:FragmentActivity,myMarker: Marker?, mMap: GoogleMap, icon: Bitmap?){
+    fun markLastLocationOnMap(
+        context: Context,
+        contextA: FragmentActivity,
+        myMarker: Marker?,
+        mMap: GoogleMap,
+        icon: Bitmap?,
+        location: LatLng = LatLng(0.0, 0.0)
+    ) {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -83,17 +95,14 @@ class MapDirector {
             )
             return
         }
-        fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(context)
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-            location?.let {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { loc: Location? ->
+            loc?.let {
                 val myLatLng = LatLng(it.latitude, it.longitude)
                 var marker = myMarker
                 if (marker == null) {
-
-
                     if (icon != null) {
                         val smallMarker = Bitmap.createScaledBitmap(icon, 100, 100, false)
-
                         marker = mMap.addMarker(
                             MarkerOptions()
                                 .position(myLatLng)
@@ -107,10 +116,21 @@ class MapDirector {
                     marker.position = myLatLng
                 }
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 18f))
+                // Use the provided location if it's not the default LatLng(0.0, 0.0)
+                val zoomingOn = if (location.latitude != 0.0 && location.longitude != 0.0) {
+                    location
+                } else {
+                    myLatLng
+                }
+
+                // Zoom on the location, only if it's a valid location
+                if (zoomingOn.latitude != 0.0 && zoomingOn.longitude != 0.0) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(zoomingOn, 16f))
+                }
             }
         }
     }
+
     //orientation Sensor
     fun startOrientationListener(sensorManager: SensorManager, myMarker: Marker?) {
         val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
@@ -140,7 +160,7 @@ class MapDirector {
     //fun draw the route and getInfo
     suspend fun getRouteAndDurationAndDistance(origin: LatLng, destination: LatLng,context: Context):Triple<String,String,String> {
             try {
-                val response = RetrofitBuilder.instance.getDirections(
+                val response = RetrofitBuilder.directionsInstance.getDirections(
                     origin = "${origin.latitude},${origin.longitude}",
                     destination = "${destination.latitude},${destination.longitude}",
                     apiKey = AppInfo.googleMapKay

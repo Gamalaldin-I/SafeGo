@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id ("kotlin-kapt")
+
 }
+
 
 android {
     namespace = "com.example.safego"
@@ -107,6 +110,17 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 
     implementation ("androidx.cardview:cardview:1.0.0")
+    // room
+    // Room components
+// Room Runtime (يتضمن Room الأساسية)
+    implementation("androidx.room:room-runtime:2.6.1")
 
+    // Room Compiler (لعملية Annotation Processing)
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Room مع دعم Kotlin Extensions و Coroutines
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.github.anastr:speedviewlib:1.6.1")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 }

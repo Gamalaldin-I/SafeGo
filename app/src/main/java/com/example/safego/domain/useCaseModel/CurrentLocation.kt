@@ -1,7 +1,8 @@
 package com.example.safego.domain.useCaseModel
 
 data class CurrentLocation(
-    val latitude: Double,
-    val longitude: Double,
-    val address: String
+    var latitude: Double,
+    var longitude: Double,
+    var address: String,
+    var speed: Float=0f,
 )
